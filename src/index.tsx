@@ -4,18 +4,15 @@ import './index.css';
 import CodeEditor from './App';
 import reportWebVitals from './reportWebVitals';
 
-// const Application = () => {
-//   const [input, setInput] = useState('');
-// }
-
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
     <CodeEditor
-      initialValue="Some value from start of file"
+      initialValue="mylife;"
       //onChange={(value)=>setInput(value)}
+      onChange={(value)=>(value)}
     />
   </React.StrictMode>
 );
