@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import MonacoEditor from "@monaco-editor/react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface CodeEditorProps {
+  initialValue: string;
+  //onChange(value: string): void;
 }
 
-export default App;
+const CodeEditor: React.FC<CodeEditorProps> = ({ initialValue
+  //initialValue
+}) => {
+  const onEditorDidMount = (getValue: () => string,monacoEditor:any) => {
+    monacoEditor.onDidChangeModelContent(() => {
+      console.log(getValue())
+    });
+  };
+
+  return(
+    <MonacoEditor
+      //editorDidMount={onEditorDidMount}
+      value={initialValue}
+      theme="vs-dark"
+      language="javascript"
+      height="500px"
+      options={{
+        wordWrap: "on",
+        //navigacija s lijeve strane
+        minimap: { enabled: false },
+        //za nekoristene importe
+        showUnused: false,
+        //miče prazninu desno od broja reda
+        folding: false,
+        //
+        lineNumbersMinChars: 3,
+        fontSize: 16,
+        scrollBeyondLastLine: false,
+        automaticLayout: true,
+      }}
+    />
+  )
+};
+
+export default CodeEditor;

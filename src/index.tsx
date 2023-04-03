@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
+import CodeEditor from './App';
 import reportWebVitals from './reportWebVitals';
+
+// const Application = () => {
+//   const [input, setInput] = useState('');
+// }
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <CodeEditor
+      initialValue="Some value from start of file"
+      //onChange={(value)=>setInput(value)}
+    />
   </React.StrictMode>
 );
 
