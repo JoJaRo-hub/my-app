@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import CodeEditor from './App';
+import App from './Editor';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
@@ -9,10 +10,14 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <CodeEditor
+    {/* <CodeEditor
       initialValue="mylife;"
       //onChange={(value)=>setInput(value)}
       onChange={(value)=>(value)}
+    /> */}
+
+    <App
+    
     />
   </React.StrictMode>
 );
