@@ -24,7 +24,6 @@ function App() {
     // Register completion provider for the `gherkin` language
     monaco.languages.registerCompletionItemProvider("gherkin", {
       triggerCharacters: ["G", "W", "T", "A"], // Trigger completion only when the user types a new step keyword
-
       provideCompletionItems: function (model: any, position: any) {
         var textUntilPosition = model.getValueInRange({
           startLineNumber: 1,
@@ -32,25 +31,21 @@ function App() {
           endLineNumber: position.lineNumber,
           endColumn: position.column,
         });
-
         var match = textUntilPosition.match(
-          /(?:^|\n)(?:Given|When|Then|And)\s+(.*)$/
-        );
+  /(?:^|\n)(?:Given|When|Then|And)\s+(.*)$/
+);
 
         if (match == null) {
-          // Recalculate the array of rows based on the current content of the editor
-          let content = model.getValue();
-          let arrayOfRows = content.split("\n");
-          arrayOfRows = arrayOfRows.map((sentence:any) => {
-            return sentence.replace(/"([^"]*)"/g, '"{parameter}"');
-          });
-          let keywords: any[] = [];
-          arrayOfRows.forEach((element:any) => {
-              if (!keywords.includes(element)) {
-                keywords.push(element);
-              }
-          });
-          var suggestions = keywords.map(function (keyword: any) {
+          var keywords = [
+            "I am on the homepage",
+            "I click the button",
+            "I see the success message",
+            "Given I am on the homepage and I click the button",
+            "When I click the button and I see the success message",
+            "Then I am on the homepage and I see the success message",
+          ];
+
+          var suggestions = keywords.map(function (keyword) {
             return {
               label: keyword,
               kind: monaco.languages.CompletionItemKind.Keyword,
@@ -58,26 +53,51 @@ function App() {
             };
           });
           console.log(suggestions);
-          return { suggestions };
+          return {
+            suggestions: suggestions,
+          };
         }
+      
+        
+        return { suggestions: [] };
       },
-    },);
+    });
   }
 
   function showValue() {
     console.log(editorRef.current.getValue());
   }
 
+  const onFormatClick = () => {
+    // get current value from editor
+    const unformatted = editorRef.current.getModel().getValue();
+
+    //format the value
+    const formatted = prettier.format(unformatted, {
+      parser: "babel",
+      plugins: [parser],
+      useTabs: false,
+      semi: true,
+    });
+
+    // set the formatted value back in the editor
+    editorRef.current.setValue(formatted);
+  };
+
   return (
     <>
       <div>
+        <button onClick={onFormatClick}>Format</button>
         <button onClick={showValue}>Show value</button>
         <Editor
           language="gherkin"
           theme="vs-dark"
           height="500px"
           defaultValue={`Feature: Test feature
- Scenario: Test scenario`}
+  Scenario: Test scenario
+    Given I am on the homepage
+    When I click the button
+    Then I see the success message`}
           onMount={handleEditorDidMount}
           options={{
             wordWrap: "on",
